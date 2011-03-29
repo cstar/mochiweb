@@ -197,13 +197,16 @@ headers_ws_upgrade(Socket, Request, Body, H) ->
     mochiweb_websocket_delegate:go(WSPid, Socket),
     call_body(Body#body.websocket_loop, WSReq).
 
+call_body({M, F, A}, Req) ->
+    erlang:apply(M, F, [Req | A]);
 call_body({M, F}, Req) ->
     M:F(Req);
 call_body(Body, Req) ->
     Body(Req).
 
 handle_invalid_request(Socket) ->
-    handle_invalid_request(Socket, {'GET', {abs_path, "/"}, {0,9}}, []).
+    handle_invalid_request(Socket, {'GET', {abs_path, "/"}, {0,9}}, []),
+    exit(normal).
 
 handle_invalid_request(Socket, Request, RevHeaders) ->
     Req = new_request(Socket, Request, RevHeaders),
