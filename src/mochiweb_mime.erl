@@ -83,7 +83,7 @@ exhaustive_from_extension_test() ->
     [?assertEqual(V, from_extension(K)) || {K, V} <- T].
 
 from_extension_test() ->
-    ?assertEqual("text/html",
+    ?assertEqual("text/html; charset=utf-8",
                  from_extension(".html")),
     ?assertEqual(undefined,
                  from_extension("")),
